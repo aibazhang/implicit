@@ -122,6 +122,43 @@ class RecommenderBase(object):
         pass
 
 
+class RandomRecommender(RecommenderBase):
+    """RandomRecommender for completing"""
+
+    def __init__(self):
+        self.n_item = 0
+        self.random_seed = None
+
+    def fit(self, item_users):
+        self.n_item = item_users.shape[0]
+
+    def recommend(self, userid, user_items,
+                  N=10, filter_already_liked_items=True, filter_items=None, recalculate_user=False):
+
+        np.random.seed(self.random_seed)
+
+        already_liked_items = list()
+        for index in range(user_items.indptr[userid], user_items.indptr[userid + 1]):
+            already_liked_items.append(user_items.indices[index])
+
+        linked = set()
+        if filter_already_liked_items:
+            while len(linked) < N:
+                rec = np.random.randint(0, self.n_item-1)
+                if rec not in already_liked_items:
+                    linked.add((rec, 1))
+        return list(linked)
+
+    def rank_items(self, userid, user_items, selected_items, recalculate_user=False):
+        raise NotImplementedError("Not implemented Yet")
+
+    def similar_users(self, userid, N=10):
+        raise NotImplementedError("Not implemented Yet")
+
+    def similar_items(self, itemid, N=10):
+        raise NotImplementedError("Not implemented Yet")
+
+
 class MatrixFactorizationBase(RecommenderBase):
     """ MatrixFactorizationBase contains common functionality for recommendation models.
 

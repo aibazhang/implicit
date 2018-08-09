@@ -8,13 +8,17 @@ from scipy.sparse import csr_matrix
 from implicit.evaluation import precision_at_k
 from implicit.nearest_neighbours import ItemItemRecommender
 
+from implicit.nearest_neighbours import (BM25Recommender, CosineRecommender,
+                                         TFIDFRecommender, bm25_weight)
+
 
 class TestRecommenderBaseMixin(object):
     """ Mixin to test a bunch of common functionality in models
     deriving from RecommenderBase """
 
     def _get_model(self):
-        raise NotImplementedError()
+        # raise NotImplementedError()
+        return CosineRecommender
 
     def test_recommend(self):
         item_users = self.get_checker_board(50)

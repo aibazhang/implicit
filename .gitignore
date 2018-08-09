@@ -60,5 +60,8 @@ target/
 
 #Ipython Notebook
 .ipynb_checkpoints
+.idea/
+vscode/
 
-.vscode/
+# example output file
+examples/*.tsv

@@ -88,7 +88,7 @@ def precision_at_k(model, train_user_items, test_user_items, int K=10,
     cdef unordered_set[int] * likes
 
     progress = tqdm.tqdm(total=users, disable=not show_progress)
-
+	
     with nogil, parallel(num_threads=num_threads):
         ids = <int *> malloc(sizeof(int) * K)
         likes = new unordered_set[int]()
